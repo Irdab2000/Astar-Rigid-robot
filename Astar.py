@@ -61,20 +61,6 @@ def reached_goal(node, goal):
 def get_cost(current_node, neighbor_node):
     return math.sqrt((current_node.x - neighbor_node.x)**2 + (current_node.y - neighbor_node.y)**2)
 
-
-# Define get_heuristic function
-def get_heuristic(node, goal_node):
-    tolerance = 1.5
-    
-    dx = node.x - goal_node.x
-    dy = node.y - goal_node.y
-    dtheta = abs(node.theta - goal_node.theta)
-    
-    if dtheta > math.pi:
-        dtheta = 2 * math.pi - dtheta
-    
-    return math.sqrt(dx**2 + dy**2 + dtheta**2) + tolerance
-
 # Define is_valid_node function
 def is_valid_node(node):
     if(node.state[0]> MAP_WIDTH or node.state[1]>MAP_HEIGHT):
@@ -84,9 +70,11 @@ def is_valid_node(node):
             return False
         return True
 
+#Normalizing each coordiate
 def normalize(val):
     return (val*2)/2
 
+#Function to move forward
 def move_forward(node,goal,step):
     new_x = normalize(node.state[0] + step*math.cos(math.radians(node.state[2])))
     new_y = normalize(node.state[1] + step*math.sin(math.radians(node.state[2])))
@@ -106,6 +94,7 @@ def move_forward(node,goal,step):
     else:
         print("Cannot move forward")
 
+#Fuction to move 30 degrees to the left
 def turn_left_30(node,goal,step):
     new_x = normalize(node.state[0] + step*math.cos(math.radians(node.state[2])+math.pi/6))
     new_y = normalize(node.state[1] + step*math.sin(math.radians(node.state[2])+math.pi/6))
@@ -125,6 +114,7 @@ def turn_left_30(node,goal,step):
     else:
         print("Cannot move 30 degrees to the left")
 
+#Function to move 30 degrees to the right
 def turn_right_30(node,goal,step):
     new_x = normalize(node.state[0] + step*math.cos(math.radians(node.state[2])+math.pi/6))
     new_y = normalize(node.state[1] - step*math.sin(math.radians(node.state[2])+math.pi/6))
@@ -144,6 +134,7 @@ def turn_right_30(node,goal,step):
     else:
         print("Cannot move 30 degrees to the right")
 
+#Function to move 60 degrees to the left
 def turn_left_60(node,goal,step):
     new_x = normalize(node.state[0] + step*math.cos(math.radians(node.state[2])+math.pi/3))
     new_y = normalize(node.state[1] + step*math.sin(math.radians(node.state[2])+math.pi/3))
@@ -163,6 +154,7 @@ def turn_left_60(node,goal,step):
     else:
         print("Cannot move 60 degrees to the left")
 
+#Function to move 60 degrees to the right
 def turn_right_60(node,goal,step):
     new_x = normalize(node.state[0] + step*math.cos(math.radians(node.state[2])+math.pi/3))
     new_y = normalize(node.state[1] - step*math.sin(math.radians(node.state[2])+math.pi/3))
@@ -182,6 +174,7 @@ def turn_right_60(node,goal,step):
     else:
         print("Cannot move 60 degrees to the right")
 
+#Backtracking
 def backtrack(node):
     path = []
     path.append(node.state)
@@ -193,6 +186,7 @@ def backtrack(node):
     print("Done backtracking")
     visualize(path)
 
+#Astra logic using priority queue
 def astar(start, goal,step):
     heapq.heappush(heap, (start))
     while heap:
