@@ -13,7 +13,7 @@ GOAL_TOLERANCE = 1.5
 MAP_WIDTH = 599
 MAP_HEIGHT = 249
 heap = []   #Open list
-visited = np.zeros((2*MAP_HEIGHT,2*MAP_WIDTH,12)) #Closed list
+visited = np.zeros((1200,500,12)) #Closed list
 
 class Node:
     def __init__(self):
@@ -36,7 +36,7 @@ def is_obstacle(x,y):
         ind2 = obs_coord(x,y+ROBOT_RADIUS)
         ind3 = obs_coord(x-ROBOT_RADIUS,y)
         ind4 = obs_coord(x,y-ROBOT_RADIUS)
-        if(ind1 or ind2 or ind3 or ind4 == True):
+        if(ind1 or ind2 or ind3 or ind4 == 1):
             return True
         else:
             return False
@@ -253,13 +253,13 @@ def visualize(path_gen): #Function to visualize the graph
     pygame.draw.polygon(surface, OBSTACLE_COLOR, ((460,225),(460,25),(510,125)))   
 
     for idx,any in enumerate(heap):
-        pygame.draw.rect(surface,VISITED_COLOR,(any.state[0],WINDOW_HEIGHT-any.state[1],1,1))
+        pygame.draw.rect(surface,VISITED_COLOR,(any.state[0],any.state[1],1,1))
         window.blit(surface,(0,0))
         # pygame.display.flip()
         pygame.display.update()
     
     for idx, every in enumerate(path_gen):
-        pygame.draw.rect(surface,PATH_COLOR,(every[0],WINDOW_HEIGHT-every[1],1,1))
+        pygame.draw.rect(surface,PATH_COLOR,(every[0],every[1],10,10))
         # pygame.display.flip()
     # Blit the updated surface onto the Pygame window
         window.blit(surface, (0, 0))
@@ -285,16 +285,54 @@ def visualize(path_gen): #Function to visualize the graph
     # Quit Pygame
     pygame.quit()
 
+def get_startcoord_input(): #function to get start coordinates from user
+    flag = False
+    x = int(input("Enter x-ccordinate of start position:"))
+    y = int(input("Enter y coordinate of start position:"))
+    theta = int(input("Enter start orientation in multiples of 30:"))
+    y = 249-y
+    if(theta%30 !=0):
+        print("orientation should be in multiples of 30")
+        return [flag]
+    if(x<0 or x>=600 or y<0 or y>=250):
+        print("Start coordinates out of bounds, Please enter x and y coordinates again")
+        return [flag]
+    elif (is_obstacle(x,y)):
+        print("Start coordinates on an obstacle, Please enter x and y coordinates again")
+        return [flag]
+    else:
+        return [True,x,y,theta]
+def get_goalcoord_input(): #Function to get goal coordinates from user
+    flag = False
+    xg = int(input("Enter x-ccordinate of goal position:"))
+    yg = int(input("Enter y coordinate of goal position:"))
+    theta_g =int(input("Enter goal orientation in multiples of 30"))
+    yg = 249-yg
+    if(theta_g%30 !=0):
+        print("orientation should be in multiples of 30")
+        return [flag]
+    if(xg<0 or xg>=600 or yg<0 or yg>=250):
+        print("Goal coordinates out of bounds, Please enter x and y coordinates again")
+        return [flag]
+    elif(is_obstacle(xg,yg)):
+        print("goal coordinates on an obstacle, Please enter x and y coordinates again")
+        return [flag]
+    else:
+        return [True,xg,yg,theta_g]
+
 if __name__ == "__main__":
     node = Node()
-    x = int(input("start x - coordinate"))
-    y = int(input("start y coordinate:"))
-    theta = int(input("start orientation"))
-    start = list([x,y,theta])
-    node.state = start
+    a = True
+    start_input = []
+    while(a not in start_input):
+        start_input = get_startcoord_input()    
+    node.state  = [start_input[1],start_input[2],start_input[3]]
+    goal_input = []
+    while(a not in goal_input):
+        goal_input = get_goalcoord_input()
+    goal = [goal_input[1],goal_input[2],goal_input[3]]
     node.parent = None
     node.cost_to_come = 0
     node.cost_to_goal = 100000
-    goal = [170,100,0]
     step = int(input("Enter step between 1 and 10"))
     astar(node,goal,step)
