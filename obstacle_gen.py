@@ -36,6 +36,13 @@ def pathu():
     #initialize Borders
 
     color1 = (255,255,255)
+    pygame.draw.rect(surface, color1, (0,0,5,250))
+    pygame.draw.rect(surface, color1, (595,0,5,250))
+    pygame.draw.rect(surface, color1, (0,0,600,5))
+    pygame.draw.rect(surface, color1, (0,245,600,5))
+
+
+
     obs.append(pygame.draw.rect(surface, color1, pygame.Rect(100-5, 145-5, 50+10, 100+10)))
     obs.append(pygame.draw.rect(surface, color1, pygame.Rect(100-5, 5-5, 50+10, 100+10)))
     obs.append(pygame.draw.polygon(surface,color1,HexV1))
@@ -60,8 +67,12 @@ def pathu():
 def obs_coord(x,y):
     occupied_coords = []
     ind=0
+    #Bounds
+    if ((x<5) or (x>595)) or ((y<5) or (y>245)):
+        occupied_coords.append([x,y])
+        ind=1
     #Hexagon 
-    if (x >= 235.5) and (x <= 365.5) and (y >= 25.0 + 0.577*(x-262.5)) and (y <= 220.5 - 0.577*(x-262.5)) and (y <= 220.5 + 0.577*(x-337.5)) and (y >= 25.0 - 0.577*(x-337.5)):
+    if (x >= 231) and (x <= 369) and (y >= 15.0 + 0.577*(x-260)) and (y <= 232.5 - 0.577*(x-260)) and (y <= 230.5 + 0.577*(x-325.5)) and (y >= 20.0 - 0.577*(x-325.5)):
         occupied_coords.append([x,y])
         ind=1
     #Rectangle
@@ -77,3 +88,4 @@ def obs_coord(x,y):
         occupied_coords.append([x,y])
         ind=1
     return ind
+# pathu()
