@@ -1,4 +1,10 @@
 #!/usr/bin/python3
+"""
+#########################################################################################
+Authors : Vyshnav Achuthan (119304815)
+          Badrinarayan (119215418)
+#########################################################################################
+"""
 import math
 import heapq
 from obstacle_gen import obs_coord
@@ -29,7 +35,7 @@ class Node:
 def is_obstacle(x,y):
     ind=obs_coord(x,y)
     if(ind == 1):
-        print("On obstacle")
+        #print("On obstacle")
         return True
     else:
         ind1 = obs_coord(x+ROBOT_RADIUS,y)
@@ -191,7 +197,7 @@ def astar(start, goal,step):
     heapq.heappush(heap, (start))
     while heap:
         curr_node = heapq.heappop(heap)
-        print(curr_node.state)
+        print("Searching :",curr_node.state)
         if is_valid_node(curr_node):
         
             if reached_goal(curr_node, goal):
@@ -208,8 +214,7 @@ def astar(start, goal,step):
             turn_left_30(curr_node,goal,step)
             turn_right_30(curr_node,goal,step)
             turn_left_60(curr_node,goal,step)
-            turn_right_60(curr_node,goal,step)
-    print("Couldn't find a path")       
+            turn_right_60(curr_node,goal,step)      
     return None
 
 def visualize(path_gen): #Function to visualize the graph
