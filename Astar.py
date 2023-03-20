@@ -238,9 +238,12 @@ def visualize(path_gen): #Function to visualize the graph
 
     # Create the surface for the obstacle course
     surface = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT))
+    # pygame.display.flip()
+
     # Fill the surface with the background color
     surface.fill(BACKGROUND_COLOR)
     #obstacles = []
+    pygame.display.flip()
     pygame.draw.rect(surface, CLEARANCE_COLOR, (100-5, 145-5,50+10 ,100+10))
     pygame.draw.polygon(surface, CLEARANCE_COLOR, ((300,200+5),(365+4,162),(365+4,87),(300,50-5),(235-4,87),(235-4,162))) 
     pygame.draw.rect(surface, CLEARANCE_COLOR, (100-5,5-5,50+10,100+10))                                                                #Printing directly using the coordinates for visualization.
@@ -254,6 +257,7 @@ def visualize(path_gen): #Function to visualize the graph
     for idx,any in enumerate(heap):
         pygame.draw.rect(surface,VISITED_COLOR,(any.state[0],any.state[1],1,1))
         window.blit(surface,(0,0))
+        pygame.display.flip()
         pygame.display.update()
     
     for idx, every in enumerate(path_gen):
@@ -267,7 +271,7 @@ def visualize(path_gen): #Function to visualize the graph
 
     
     # Blit the surface onto the Pygame window
-    window.blit(surface, (0, 0))
+        window.blit(surface, (0, 0))
 
     # Run the game loop
     running = True
